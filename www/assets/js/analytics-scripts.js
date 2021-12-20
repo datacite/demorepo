@@ -13,7 +13,7 @@ window.addEventListener('load', function() {
   //    json+ld (schema.org metadata)
   //    html meta tags (dublin core metadata)
   //    page url (could contain the doi) - can be anything, but in this case, picks the percent-encoded url containing
-  //      the doi out of the query string, ex: ...?test_url=https://domain.org/doi:10.1111
+  //      the doi out of the query string, ex: ...?test_url=https://datadryad.org/stash/dataset/doi:10.5061%2Fdryad.0cfxpnw32
   //
   // A lot of the code here is the suggested code for custom events documented at:
   // https://plausible.io/docs/custom-event-goals
@@ -57,7 +57,7 @@ function registerDownloads () {
   // because it tells us that there are some downloads missing a doi.
 
   if (!doi) {
-    console.error("Error: No DOI provided in metadata.");
+    console.error("Error: No DOI found. Tracking for this page is disabled.");
   } else {
     // Add data-analytics attribute to elements marked with data-analytics-downloads.
     elements = document.querySelectorAll("a[" + DOWNLOAD_ATTRIBUTE + "]");
