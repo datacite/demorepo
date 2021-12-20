@@ -20,90 +20,28 @@
   {
     "@context": "http://schema.org",
     "@type": "Dataset",
-    "@id": "https://doi.org/10.5061/dryad.0cfxpnw32b",
-    "name": "Respirometry data for cactus mice (Peromyscus eremicus) corresponding to Colella et al. 2021",
-    "description": [
-      "<p>Metabolism is a complex phenotype shaped by natural environmental rhythms, as well as behavioral, morphological, and physiological adaptations. Metabolism has been historically studied under constant environmental conditions, but new methods of continuous metabolic phenotyping now offer a window into organismal responses to dynamic environments, and enable identification of abiotic controls and the timing of physiological responses relative to environmental change. We use indirect calorimetry to characterize metabolic phenotypes of the desert-adapted cactus mouse (<i>Peromyscus eremicus</i>) in response variable environmental conditions that mimic their native environment versus those recorded under constant warm and constant cool conditions, while using a constant photoperiod and full access to resources. We found significant sexual dimorphism, with males being more prone to dehydration than females. Under circadian environmental variation, most metabolic shifts occurred prior to physical environmental change and the timing was disrupted under both constant temperature-humidity treatments. The ratio of CO<sub>2</sub> produced to O<sub>2</sub> consumed (the respiratory quotient) reached greater than 1.0, only during the light phase under diurnally variable conditions, a pattern that strongly suggests that<i> </i>lipogenesis is contributing to the production of energy and endogenous water. Our results are consistent with historical descriptions of circadian torpor in this species (torpid by day, active by night), but reject the hypothesis that torpor is initiated by food restriction or negative water balance.</p>\r\n",
-      "<p>Detailed methods are available in Colella et al. 2021.<br>\r\n<br>\r\nRaw respirometry data were collected on a Sable Systems International Field Metabolic System (FMS) at the University of New Hampshire. Fourteen individuals were measured for 3 days under baseline diurnal conditions and 14 additional individuals were measured under constant hot and constant cold conditions.</p>\r\n\r\n<p>Raw data include:<br>\r\n4 Baseline ExpeData (.exp) files: RepRec_02-20-2020_cat.exp, RepRec_02-26-2020_cat.exp, RepRec_03-10-2020_cat.exp, RepRec_03-15-2020_cat.exp</p>\r\n\r\n<p>14 Cold ExpeData files: 20_april_2020_cat1.exp, 20_april_2020_cat2.exp, 20_april_2020_cat3.exp, 20_april_2020_cat4.exp, 7June20_0006_cat1.exp, 7June20_0013_cat2.exp, 7June20_0019_cat3.exp, 7June20_0025_cat4.exp, 30_april20_0098_cat4.exp, 30_april20_0105_cat5.exp, 30_april20_0111_cat6.ex, 27_april_2020_cat1.exp, 27_april_2020_cat2.exp, 27_april_2020_cat3.exp</p>\r\n\r\n<p>15 Hot Expedata files: 3June20_0006_cat1.exp<br>\r\n3June20_0013_cat2.exp, 3June20_0020_cat3.exp, 3June20_0027_cat4.ex, 29May20_0007_cat1.exp, 29May20_0018_cat2.exp, 29May20_0027_cat3.ex, 25may20_0006_cat1.exp, 25may20_0014_cat2.exp, 25may20_0021_cat3.exp, 25may20_0027_cat4.ex, 18_may20_0007_cat1.exp,, 18_may20_0014_cat2.exp,18_may20_0021_cat3.exp, 18_may20_0027_cat4.exp<br>\r\n<br>\r\nRaw data were processed through 2 macro files (<em><strong>extract-means-Matt-120sec.txt</strong></em> and <em><strong>VO2-VCO2-H2O-120sec_per_cage.txt</strong></em>, available here) to create: <em><strong>analysis_data_final_2July2020.csv </strong></em>which was used in all downstream analyses. <em><strong>all_noOL_F.csv</strong></em> and <em><strong>all_noOL_M.csv</strong></em> represent subsets of <em><strong>analysis_data_final_2July2020.csv </strong></em>that include only females and males, respectively, without outliers that were more than 3 standard deviations from the mean (per: github.com/jpcolella/removeOL.R). All additional analyses detailed in the manuscript were conducted in R using scripts available at github.com/jpcolella/peer_respo.</p>\r\n",
-      "<p>Raw data from the Sable Systems International Field Metabolic system was processed using the two macro scripts uploaded here: <strong><em>e</em></strong><em><strong>xtract-means-Matt-120sec.txt</strong></em> and <em><strong>VO2-VCO2-H2O-120sec_per_cage.txt</strong></em>,</p>\r\n\r\n<p>Data: <strong>analysis_data_final_2July2020.csv</strong> is a comma delimited file containing respirometry data for male and female cactus mice for 3 treatment groups (i) baseline/diurnally variable envrionmental conditions, (ii), constant hot and dry conditions, (iii) constant cool and wet conditions. <br>\r\n<br>\r\nColumns:<br>\r\nSex = M/F indicating Male/Female<br>\r\nEE = energy expenditure <br>\r\nH2Omg = relative water loss (RWL; mg)<br>\r\nRQ = respiratory quotient (ratio of VCO2 / VO2)<br>\r\nAnimal_ID = individual animal identifier<br>\r\nDeg_C = temperature in Celcius<br>\r\nweight = animal weight in grams (g)<br>\r\nexperiment = eperimental treatment group (BL = baseline, Hot, Cold)<br>\r\nStartTime = time of measurment initiation (format = \"%H:%M:%S\")<br>\r\nSD_VCO2 = standard deviation (SD) of VCO2<br>\r\nSD_VO2 = standard deviation (SD) of VO2<br>\r\nVO2 = VO2 estimate for a particular recording<br>\r\nVCO2 = VCO2 estimate for a particular recording<br>\r\nStartDate = Date (format = \"%Y-%m-%d\") of a particular recording<br>\r\nhour = integer indicating the hour of a particular 120s recording</p>\r\n\r\n<p><em><strong>all_noOL_F.csv</strong></em> and <em><strong>all_noOL_M.csv</strong></em>  = Female and male subsets of <em><strong>analysis_data_final_2July2020.csv </strong></em>with outliers (&gt; 3 standard deviations) removed</p>\r\n\r\n<p>Once processed, csv's can be analyzed following scripts available at: github.com/jpcolella/peer_respo/ </p>\r\n"
-    ],
-    "url": "http://datadryad.org/stash/dataset/doi%253A10.5061%252Fdryad.f4qrfj6v0",
-    "identifier": [ "https://doi.org/10.5061/dryad.f4qrfj6v0", "https://doi.org/10.5061/dryad.f4qrfj6v1" ],
-    "version": 6,
-    "isAccessibleForFree": true,
-    "keywords": [
-      "Peromyscus eremicus",
-      "Peromyscus",
-      "respirometry"
-    ],
-    "creator": [
-      {
-        "@type": "Person",
-        "name": "Jocelyn Colella",
-        "givenName": "Jocelyn",
-        "familyName": "Colella",
-        "sameAs": "http://orcid.org/0000-0003-2463-1029",
-        "affiliation": {
-          "@type": "Organization",
-          "sameAs": "https://ror.org/01rmh9n78",
-          "name": "University of New Hampshire"
-        }
-      },
-      {
-        "@type": "Person",
-        "name": "Danielle Blumstein",
-        "givenName": "Danielle",
-        "familyName": "Blumstein",
-        "affiliation": {
-          "@type": "Organization",
-          "sameAs": "https://ror.org/01rmh9n78",
-          "name": "University of New Hampshire"
-        }
-      },    {
-        "@type": "Person",
-        "name": "Matthew MacManes",
-        "givenName": "Matthew",
-        "familyName": "MacManes",
-        "affiliation": {
-          "@type": "Organization",
-          "sameAs": "https://ror.org/01rmh9n78",
-          "name": "University of New Hampshire"
-        }
-      }
-    ],
-    "distribution": {
-      "@type": "DataDownload",
-      "encodingFormat": "application/zip",
-      "contentUrl": "http://datadryad.org/api/v2/datasets/doi%253A10.5061%252Fdryad.f4qrfj6v0/download"
+    "@id": "https://doi.org/10.70102/mdc.winereviews",
+    "url": "https://demorepo.stage.datacite.org/doi-in-schema-org-metadata.html",
+    "name": "Wine Reviews",
+    "identifier": [ "https://doi.org/10.70102/mdc.winereviews", "https://doi.org/10.70102/mdc.winereviews" ],
+    "author": {
+      "name": "Fun Sample Datasets",
+      "@id": "domohelp.domo.com"
     },
-    "temporalCoverage": "2020",
-    "spatialCoverage": [
-
-    ],
-    "license": {
-      "@type": "CreativeWork",
-      "name": "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
-      "license": "https://creativecommons.org/publicdomain/zero/1.0/"
-    },
-    "publisher": {
-      "@id": "https://datadryad.org",
-      "@type": "Organization",
-      "legalName": "Dryad Digital Repository",
-      "name": "Dryad",
-      "url": "https://datadryad.org"
-    },
+    "schemaVersion": "http://datacite.org/schema/kernel-4",
     "provider": {
-      "@id": "https://datadryad.org"
+      "@type": "Organization",
+      "name": "datacite"
     }
   }
-  </script>
+</script>
 </head>
 
 <body>
 <include src="./html/navbar.html"></include>
 
 <div class="container custom-container-ws">
-  <h2>DOI in the Schema.org Metadata</h2>
+  <h2>Wine Reviews Dataset - DOI in the Schema.org Metadata</h2>
   <hr>
 
   <div style="margin-bottom: 20px;">
@@ -115,7 +53,7 @@
   </div>
 
   <div style="margin-bottom: 20px;">
-    <a href="./assets/datasets/JEOPARDY.csv" download="" data-analytics-downloads>
+    <a href="./assets/datasets/winemag-data_first150k.csv" download="" data-analytics-downloads>
       <button type="button" class="btn btn-secondary">Download Dataset</button>
     </a>
   </div>
