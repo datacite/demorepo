@@ -1,3 +1,7 @@
+// The event must match exactly with what is defined in plausible analytics as a custom goal.
+const DOWNLOAD_EVENT = "downloads";
+const DOWNLOAD_ATTRIBUTE = "data-analytics-downloads";
+const DOWNLOAD_PROPS = {"props":{}};
 
 ///////////////////////////////////////////////////////////////
 // Functions derived from:
@@ -50,6 +54,98 @@ function validate_doi(doi) {
 
   return ret;
 }
+
+///////////////////////////////////////////////////////////////
+
+function doi_in_tracking_snippet () {
+  if ((typeof DOI !== 'undefined') && DOI &&
+      validate_doi(DOI))
+  {
+    console.log("*****DOI IN TRACKING SNIPPET");
+    console.log(DOI);
+  }
+  return ((typeof DOI !== 'undefined') && DOI) ? DOI : null;
+}
+
+///////////////////////////////////////////////////////////////
+
+function doi_in_schema_org_md() {
+  var ret = "";
+  var element, json, url, doi, identifiers;
+
+  if ((element = document.querySelector('script[type="application/ld+json"]')) &&
+      (json = JSON.parse(element.textContent)) &&
+      (('@context' in json) && (json['@context'] == 'http://schema.org')))
+  {
+    if (('@id' in json) && (url = json['@id']) &&
+        (doi = doi_from_url(url)))
+    {
+      ret = doi;
+    } else if (('identifier' in json) && json.identifier) {
+      identifiers = [];
+      if (typeof json.identifier == 'string') {
+        identifiers[0] = json.identifier;
+      } else if (Array.isArray(json.identifier)) {
+        identifiers = json.identifier;
+      }
+      identifiers.every(url => {
+        if (url && (doi = doi_from_url(url))) {
+          ret = doi;
+          return false;
+        } else {
+          return true;
+        }
+      });
+    }
+  }
+
+  if (ret) {
+    console.log("*****DOI IN SCHEMA.ORG METADATA");
+    console.log(ret);
+  }
+  return ret;
+}
+
+///////////////////////////////////////////////////////////////
+
+function doi_in_dublin_core_md() {
+  var ret = "";
+  var element, url, doi;
+
+  if ((element = document.querySelector('meta[name="DC.Identifier"]')) &&
+      (url = element.getAttribute('content')) &&
+      (doi = doi_from_url(url)))
+  {
+    ret = doi;
+    console.log("*****DOI IN DUBLIN CORE METADATA");
+    console.log(ret);
+  }
+  return ret;
+}
+
+//
+// Iterate Elements and add download event properties.
+//
+// @param {NodeList} Array of elements
+// @param {string} callback function name
+//
+function registerDownloadProperties(elements, doi) {
+  var props = DOWNLOAD_PROPS;
+
+  if (!elements) {
+    return;
+  }
+
+  if (doi) {
+    props.props.doi = doi;
+  }
+
+  // ultimately, we want to get and parse any properties that are already there.
+  for (var i = 0; i < elements.length; i++) {
+      elements[i].setAttribute('data-analytics', '"' + DOWNLOAD_EVENT + '", ' + JSON.stringify(props));
+  }
+}
+
 ///////////////////////////////////////////////////////////////
 
 function get_test_url() {
@@ -89,18 +185,6 @@ function doi_in_url() {
 
 ///////////////////////////////////////////////////////////////
 
-function doi_in_tracking_snippet () {
-  if ((typeof DOI !== 'undefined') && DOI &&
-      validate_doi(DOI))
-  {
-    console.log("*****DOI IN TRACKING SNIPPET");
-    console.log(DOI);
-  }
-  return ((typeof DOI !== 'undefined') && DOI) ? DOI : null;
-}
-
-///////////////////////////////////////////////////////////////
-
 window.addEventListener('load', function() {
 
   ///////////////////////////////////////
@@ -123,11 +207,6 @@ window.addEventListener('load', function() {
   //   Construct the data-analytics tag with the appropriate properties for any links or buttons, setting the doi property.
   //   Other properties can be added if needed.
   //
-
-  // The event must match exactly with what is defined in plausible analytics as a custom goal.
-  const DOWNLOAD_EVENT = "downloads";
-  const DOWNLOAD_ATTRIBUTE = "data-analytics-downloads";
-  const DOWNLOAD_PROPS = {"props":{}};
 
   ///////////////
   // FOR TESTING.
@@ -183,81 +262,6 @@ window.addEventListener('load', function() {
   }
 
   ////////////////////////////////////
-
-  function doi_in_schema_org_md() {
-    var ret = "";
-    var element, json, url, doi, identifiers;
-
-    if ((element = document.querySelector('script[type="application/ld+json"]')) &&
-        (json = JSON.parse(element.textContent)) &&
-        (('@context' in json) && (json['@context'] == 'http://schema.org')))
-    {
-      if (('@id' in json) && (url = json['@id']) &&
-          (doi = doi_from_url(url)))
-      {
-        ret = doi;
-      } else if (('identifier' in json) && json.identifier) {
-        identifiers = [];
-        if (typeof json.identifier == 'string') {
-          identifiers[0] = json.identifier;
-        } else if (Array.isArray(json.identifier)) {
-          identifiers = json.identifier;
-        }
-        identifiers.every(url => {
-          if (url && (doi = doi_from_url(url))) {
-            ret = doi;
-            return false;
-          } else {
-            return true;
-          }
-        });
-      }
-    }
-
-    if (ret) {
-      console.log("*****DOI IN SCHEMA.ORG METADATA");
-      console.log(ret);
-    }
-    return ret;
-  }
-
-  function doi_in_dublin_core_md() {
-    var ret = "";
-    var element, url, doi;
-
-    if ((element = document.querySelector('meta[name="DC.Identifier"]')) &&
-        (url = element.getAttribute('content')) &&
-        (doi = doi_from_url(url)))
-    {
-      ret = doi;
-      console.log("*****DOI IN DUBLIN CORE METADATA");
-      console.log(ret);
-    }
-    return ret;
-  }
-
-  //
-  // Iterate Elements and add download event properties.
-  //
-  // @param {NodeList} Array of elements
-  // @param {string} callback function name
-  //
-  function registerDownloadProperties(elements, doi) {
-    var props = DOWNLOAD_PROPS;
-
-    if (!elements) {
-      return;
-    }
-
-    if (doi) {
-      props.props.doi = doi;
-    }
-
-    // ultimately, we want to get and parse any properties that are already there.
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].setAttribute('data-analytics', '"' + DOWNLOAD_EVENT + '", ' + JSON.stringify(props));
-    }
-  }
 
   //////////////////////////////////////////////////////////////////////////////////////////
   //  CUSTOM EVENT HANDLER CODE FROM PLAUSIBLE.IO FOR 'data-analytics' link and form events:
@@ -337,6 +341,4 @@ window.addEventListener('load', function() {
 
     plausible(...events);
   }
-
-
 })

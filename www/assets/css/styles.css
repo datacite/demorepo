@@ -2,17 +2,22 @@
  * Custom styles here.
  */
 
- nav.custom-nav-ws {
-  margin: 1.5rem 0!important;
-  padding-left: 0;
-  padding-right: 0;
- }
+nav.custom-nav-ws {
+margin: 1.5rem 0!important;
+padding-left: 0;
+padding-right: 0;
+}
 
- body div.container.custom-container-ws {
-   margin-bottom: 50px;
- }
+body div.container.custom-container-ws {
+  margin-bottom: 50px;
+}
 
- .dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0;
- }
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}
+
+/* Override.  Default is too light to be seen. */
+.bg-light {
+  background-color: #e9ecef95!important;
+}
