@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Demo Repo Site - DOI in Schema.org Metadata</title>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 <link rel="shortcut icon" type="image/x-icon" href="./assets/images/favicon.ico" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -13,6 +12,7 @@
 <!-- Load the necessary scripts for analytics processing. -->
 <script defer type="text/javascript" src="./assets/js/analytics-scripts.js"></script>
 <!-- DOI is specified in the page as json+ld/schema.org metadata. -->
+<!-- The metadata must be embedded. Bringing it in by other methods does not seem to work well. -->
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
@@ -97,7 +97,6 @@
 </head>
 
 <body>
-
 <include src="./html/navbar.html"></include>
 
 <div class="container custom-container-ws">

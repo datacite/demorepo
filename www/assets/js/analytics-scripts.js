@@ -3,6 +3,155 @@ const DOWNLOAD_EVENT = "downloads";
 const DOWNLOAD_ATTRIBUTE = "data-analytics-downloads";
 const DOWNLOAD_PROPS = {"props":{}};
 
+window.addEventListener('load', function() {
+
+  ///////////////////////////////////////
+  // Set data-analytics on appropriate elements for call to plausible on a download event.
+  //
+  // Properties can be provided as follows:
+  //    const DOI = "10.5061/dryad.0cfxpnw32"; (javascript, in document header - set before other scripts)
+  //    json+ld (schema.org metadata)
+  //    html meta tags (dublin core metadata)
+  //    page url (could contain the doi) - can be anything, but in this case, picks the percent-encoded url containing
+  //      the doi out of the query string, ex: ...?test_url=https://domain.org/doi:10.1111
+  //
+  // A lot of the code here is the suggested code for custom events documented at:
+  // https://plausible.io/docs/custom-event-goals
+  ///////////////////////////////////////
+
+  registerDownloads();
+
+})
+
+//
+// This is the main process for registering downloads for analytics
+//
+// After document is done loading:
+//   Scan the document for metadata.  Extract the DOI.
+//   Scan the document for elements marked with the 'data-analytics-downloads' attribute (download links or buttons).
+//   Construct the data-analytics tag with the appropriate properties for any links or buttons, setting the doi property.
+//   Other properties can be added if needed.
+//
+function registerDownloads () {
+  var element;
+  var elements;
+  var doi = "";
+
+  //
+  // GET the DOI from any of the following sources.  D
+  //
+
+  doi = (
+    doi_in_tracking_snippet() ||
+    doi_in_schema_org_md() ||
+    doi_in_dublin_core_md() ||
+    doi_in_url() ||
+    ""
+  );
+
+  ////////////////////////////////////
+  // Set the data-analytics properties for elements marked as data-analytics-downloads.
+  // The only property we handle right now is doi.
+  // Others can always be added.
+  // An error is reported if there is no doi, but we still handle it
+  // because it tells us that there are some downloads missing a doi.
+
+  if (!doi) {
+    console.error("Error: No DOI provided in metadata.");
+  } else {
+    // Add data-analytics attribute to elements marked with data-analytics-downloads.
+    elements = document.querySelectorAll("a[" + DOWNLOAD_ATTRIBUTE + "]");
+    registerDownloadProperties(elements, doi);
+
+    // Handle link events - those that have data-analytics
+    elements = document.querySelectorAll("a[data-analytics]");
+    registerAnalyticsEvents(elements, handleLinkEvent);
+
+    // Handle button form events - those that have data-analytics
+    elements = document.querySelectorAll("button[data-analytics]");
+    registerAnalyticsEvents(elements, handleFormEvent);
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//  CUSTOM EVENT HANDLER CODE FROM PLAUSIBLE.IO FOR 'data-analytics' link and form events:
+//  https://plausible.io/docs/custom-event-goals
+//////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// Iterate Elements and add event listener
+//
+// @param {NodeList} Array of elements
+// @param {string} callback function name
+//
+function registerAnalyticsEvents(elements, callback) {
+  for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener('click', callback);
+      elements[i].addEventListener('auxclick', callback);
+  }
+}
+
+//
+// Handle Link Events with plausible
+// https://github.com/plausible/analytics/blob/e1bb4368460ebb3a0bb86151b143176797b686cc/tracker/src/plausible.js#L74
+//
+// @param {Event} click
+//
+function handleLinkEvent(event) {
+  var link = event.target;
+  var middle = event.type == "auxclick" && event.which == 2;
+  var click = event.type == "click";
+  while (link && (typeof link.tagName == 'undefined' || link.tagName.toLowerCase() != 'a' || !link.href)) {
+      link = link.parentNode;
+  }
+  if (middle || click)
+      registerEvent(link.getAttribute('data-analytics'));
+
+  // Delay navigation so that Plausible is notified of the click
+  if (!link.target) {
+      if (!(event.ctrlKey || event.metaKey || event.shiftKey) && click) {
+          setTimeout(function () {
+              location.href = link.href;
+          }, 150);
+          event.preventDefault();
+      }
+  }
+}
+
+//
+// Handle form button submit events with plausible
+//
+// @param {Event} click
+//
+function handleFormEvent(event) {
+  event.preventDefault();
+
+  registerEvent(event.target.getAttribute('data-analytics'));
+
+  setTimeout(function () {
+      event.target.form.submit();
+  }, 150);
+}
+
+/**
+* Parse data and call plausible
+* Using data attribute in html eg. data-analytics='"Register", {"props":{"plan":"Starter"}}'
+*
+* @param {string} data - plausible event "Register", {"props":{"plan":"Starter"}}
+*/
+function registerEvent(data) {
+  // break into array
+  if (!data) {
+    return;
+  }
+  let attributes = data.split(/,(.+)/);
+
+  // Parse it to object
+  let events = [JSON.parse(attributes[0]), JSON.parse(attributes[1] || '{}')];
+
+  plausible(...events);
+}
+
 ///////////////////////////////////////////////////////////////
 // Functions derived from:
 //   https://github.com/datacite/bolognese/blob/0f3b1d1f3830399a24e69d0f2262e7ff7c0190c9/lib/bolognese/doi_utils.rb
@@ -56,6 +205,8 @@ function validate_doi(doi) {
 }
 
 ///////////////////////////////////////////////////////////////
+// Various 'support' functions.
+///////////////////////////////////////////////////////////////
 
 function doi_in_tracking_snippet () {
   if ((typeof DOI !== 'undefined') && DOI &&
@@ -77,14 +228,11 @@ function doi_in_schema_org_md() {
       (json = JSON.parse(element.textContent)) &&
       (('@context' in json) && (json['@context'] == 'http://schema.org')))
   {
-    console.log('GOT HERE 1111');
     if (('@id' in json) && (url = json['@id']) &&
         (doi = doi_from_url(url)))
     {
-      console.log('GOT HERE 2222');
       ret = doi;
     } else if (('identifier' in json) && json.identifier) {
-      console.log('GOT HERE 3333');
       identifiers = [];
       if (typeof json.identifier == 'string') {
         identifiers[0] = json.identifier;
@@ -160,10 +308,8 @@ function get_test_url() {
     (search = new URLSearchParams(query)) &&
     (target = search.get('test_url'))
   ) {
-    console.log("target is: " + target);
     ret = target;
   } else {
-    console.log("target is: " + window.location.href);
     ret = window.location.href;
   }
 
@@ -185,163 +331,3 @@ function doi_in_url() {
 
   return ret;
 }
-
-///////////////////////////////////////////////////////////////
-
-window.addEventListener('load', function() {
-
-  ///////////////////////////////////////
-  // Set data-analytics on appropriate elements for call to plausible on a download event.
-  //
-  // Properties can be provided as follows:
-  //    const DOI = "10.5061/dryad.0cfxpnw32"; (javascript, in document header - set before other scripts)
-  //    json+ld (schema.org metadata)
-  //    html meta tags (dublin core metadata)
-  //    page url (could contain the doi)
-  //
-  // A lot of the code here is the suggested code for custom events documented at:
-  // https://plausible.io/docs/custom-event-goals
-  ///////////////////////////////////////
-
-  //
-  // On load:
-  //   Scan the document for metadata.  Extract the DOI.
-  //   Scan the document for elements marked with the data-analytics attribute (download links or buttons).
-  //   Construct the data-analytics tag with the appropriate properties for any links or buttons, setting the doi property.
-  //   Other properties can be added if needed.
-  //
-
-  ///////////////
-  // FOR TESTING.
-  // const DOI = "https://doi.org/10.5061/dryad.0cfxpnw32";
-  // const TEST_URL = 'https://datadryad.org/stash/dataset/doi:10.5061%2Fdryad.0cfxpnw32';
-  //////////////
-
-  registerDownloads();
-
-  //
-  // This is the main process for registering downloads for analytics
-  //
-  function registerDownloads () {
-    var element;
-    var elements;
-    var doi = "";
-
-    //
-    // GET the DOI from any of the following sources.  D
-    //
-
-    doi = (
-      doi_in_tracking_snippet() ||
-      doi_in_schema_org_md() ||
-      doi_in_dublin_core_md() ||
-      doi_in_url() ||
-      ""
-    );
-
-    ////////////////////////////////////
-
-    // Set the data-analytics properties for elements marked as data-analytics-downloads.
-    // The only property we handle right now is doi.
-    // Others can always be added.
-    // An error is reported if there is no doi, but we still handle it
-    // because it tells us that there are some downloads missing a doi.
-
-    if (!doi) {
-      console.error("Error: No DOI provided in metadata.");
-    }
-
-    // Add data-analytics attribute to elements marked with data-analytics-downloads.
-    elements = document.querySelectorAll("a[" + DOWNLOAD_ATTRIBUTE + "]");
-    registerDownloadProperties(elements, doi);
-
-    // Handle link events - those that have data-analytics
-    elements = document.querySelectorAll("a[data-analytics]");
-    registerAnalyticsEvents(elements, handleLinkEvent);
-
-    // Handle button form events - those that have data-analytics
-    elements = document.querySelectorAll("button[data-analytics]");
-    registerAnalyticsEvents(elements, handleFormEvent);
-  }
-
-  ////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////////////////////////////
-  //  CUSTOM EVENT HANDLER CODE FROM PLAUSIBLE.IO FOR 'data-analytics' link and form events:
-  //  https://plausible.io/docs/custom-event-goals
-  //////////////////////////////////////////////////////////////////////////////////////////
-
-  //
-  // Iterate Elements and add event listener
-  //
-  // @param {NodeList} Array of elements
-  // @param {string} callback function name
-  //
-  function registerAnalyticsEvents(elements, callback) {
-      for (var i = 0; i < elements.length; i++) {
-          elements[i].addEventListener('click', callback);
-          elements[i].addEventListener('auxclick', callback);
-      }
-  }
-
-  //
-  // Handle Link Events with plausible
-  // https://github.com/plausible/analytics/blob/e1bb4368460ebb3a0bb86151b143176797b686cc/tracker/src/plausible.js#L74
-  //
-  // @param {Event} click
-  //
-  function handleLinkEvent(event) {
-      var link = event.target;
-      var middle = event.type == "auxclick" && event.which == 2;
-      var click = event.type == "click";
-      while (link && (typeof link.tagName == 'undefined' || link.tagName.toLowerCase() != 'a' || !link.href)) {
-          link = link.parentNode;
-      }
-      if (middle || click)
-          registerEvent(link.getAttribute('data-analytics'));
-
-      // Delay navigation so that Plausible is notified of the click
-      if (!link.target) {
-          if (!(event.ctrlKey || event.metaKey || event.shiftKey) && click) {
-              setTimeout(function () {
-                  location.href = link.href;
-              }, 150);
-              event.preventDefault();
-          }
-      }
-  }
-
-  //
-  // Handle form button submit events with plausible
-  //
-  // @param {Event} click
-  //
-  function handleFormEvent(event) {
-    event.preventDefault();
-
-    registerEvent(event.target.getAttribute('data-analytics'));
-
-    setTimeout(function () {
-        event.target.form.submit();
-    }, 150);
-  }
-
-  /**
-  * Parse data and call plausible
-  * Using data attribute in html eg. data-analytics='"Register", {"props":{"plan":"Starter"}}'
-  *
-  * @param {string} data - plausible event "Register", {"props":{"plan":"Starter"}}
-  */
-  function registerEvent(data) {
-    // break into array
-    if (!data) {
-      return;
-    }
-    let attributes = data.split(/,(.+)/);
-
-    // Parse it to object
-    let events = [JSON.parse(attributes[0]), JSON.parse(attributes[1] || '{}')];
-
-    plausible(...events);
-  }
-})
