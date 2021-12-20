@@ -77,11 +77,14 @@ function doi_in_schema_org_md() {
       (json = JSON.parse(element.textContent)) &&
       (('@context' in json) && (json['@context'] == 'http://schema.org')))
   {
+    console.log('GOT HERE 1111');
     if (('@id' in json) && (url = json['@id']) &&
         (doi = doi_from_url(url)))
     {
+      console.log('GOT HERE 2222');
       ret = doi;
     } else if (('identifier' in json) && json.identifier) {
+      console.log('GOT HERE 3333');
       identifiers = [];
       if (typeof json.identifier == 'string') {
         identifiers[0] = json.identifier;
