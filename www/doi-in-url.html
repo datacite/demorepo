@@ -9,9 +9,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/htmlincludejs"></script>
 <link rel="stylesheet" href="./assets/css/styles.css">
-<script type="text/javascript" src="./assets/js/javascript.js"></script>
-
+<!-- Load the necessary scripts for analytics processing. -->
+<script defer type="text/javascript" src="./assets/js/analytics-scripts.js"></script>
+<!-- DOI is specified in the page url as a query parameter. -->
+<!-- For example: https://demorepo.stage.datacite.org?test_url=https://datadryad.org/stash/dataset/doi:10.5061%2Fdryad.0cfxpnw32 -->
 </head>
+
 <body>
 <include src="./html/navbar.html"></include>
 
@@ -22,14 +25,17 @@
   <div style="margin-bottom: 20px;">
   As stated in the <a href="https://docs.google.com/document/d/18NAwd8zYXwQea48IKGGYiepdE9l03wPKJtbFDqKYr9U/edit?usp=sharing">specification</a>, user story 2.2(3), this page models a landing page with download that has the DOI provided within the page url.
   </div>
+
   <div style="margin-bottom: 20px;">
   ** Haven't added doi to the url yet!! **
   </div>
+
   <div style="margin-bottom: 20px;">
   Click the 'Download Dataset' button and see how the event is recorded in the <a href="">site's analytic dashboard</a>.
   </div>
+
   <div style="margin-bottom: 20px;">
-    <a href="./assets/datasets/JEOPARDY.csv" download="">
+    <a href="./assets/datasets/JEOPARDY.csv" download="" data-analytics-downloads>
       <button type="button" class="btn btn-secondary">Download Dataset</button>
     </a>
   </div>
