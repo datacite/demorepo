@@ -2,7 +2,7 @@
  * Custom javascript here.
  */
 
-const DASHBOARD_URL = 'https://google.com';
+const DASHBOARD_URL = 'https://analytics.stage.datacite.org/demorepo.stage.datacite.org';
 const SPECIFICATION_URL = 'https://docs.google.com/document/d/18NAwd8zYXwQea48IKGGYiepdE9l03wPKJtbFDqKYr9U/edit?usp=sharing';
 
 window.addEventListener('load', function() {
