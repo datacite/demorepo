@@ -11,9 +11,17 @@
 <script src="https://unpkg.com/htmlincludejs"></script>
 <link rel="stylesheet" href="/assets/css/styles.css">
 <!-- Load the necessary scripts for analytics processing. -->
-<script defer type="text/javascript" src="/assets/js/analytics-scripts.js"></script>
-<script defer data-domain="demorepo.stage.datacite.org" src="https://analytics.stage.datacite.org/js/plausible.js"></script>
-<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<script type="text/javascript">
+  if (ENV == 'dev') {
+    document.write('<script defer type="text/javascript" src="/assets/js/analytics-scripts.js"><\/script>');
+    document.write('<script defer data-domain="localhost:5500" src="http://localhost:8000/js/plausible.local.js"><\/script>');
+    document.write('<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }<\/script>');
+  } else {
+    document.write('<script defer type="text/javascript" src="/assets/js/analytics-scripts.js"><\/script>');
+    document.write('<script defer data-domain="demorepo.stage.datacite.org" src="https://analytics.stage.datacite.org/js/plausible.js"><\/script>');
+    document.write('<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }<\/script>');
+  }
+</script>
 <!-- DOI is specified as a constant in the page. -->
 <!-- For example: -->
 <script type="text/javascript">const DOI="10.70102/mdc.jeopardy"</script>
