@@ -13,13 +13,9 @@
 <!-- Load the necessary scripts for analytics processing. -->
 <script type="text/javascript">
   if (ENV == 'dev') {
-    document.write('<script defer type="text/javascript" src="/assets/js/analytics-scripts.js"><\/script>');
-    document.write('<script defer data-domain="localhost:5500" src="http://localhost:8000/js/plausible.local.js"><\/script>');
-    document.write('<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }<\/script>');
+    document.write('<script async defer data-domain="localhost:5500" src="http://localhost:8000/js/custom_tracker/datacite-analytics.js"></script>');
   } else {
-    document.write('<script defer type="text/javascript" src="/assets/js/analytics-scripts.js"><\/script>');
-    document.write('<script defer data-domain="demorepo.stage.datacite.org" src="https://analytics.stage.datacite.org/js/plausible.js"><\/script>');
-    document.write('<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }<\/script>');
+    document.write('<script async defer data-domain="demorepo.stage.datacite.org" src="https://analytics.stage.datacite.org/js/custom_tracker/datacite-analytics.js"></script>');
   }
 </script>
 <!-- DOI is specified as a constant in the page. -->
