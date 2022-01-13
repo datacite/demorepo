@@ -6,6 +6,7 @@ const DASHBOARD_URL = 'https://analytics.stage.datacite.org/demorepo.stage.datac
 const DASHBOARD_URL_FABRICA = 'https://doi.stage.datacite.org/repositories/datacite.demo/analytics';
 const SPECIFICATION_URL = 'https://docs.google.com/document/d/18NAwd8zYXwQea48IKGGYiepdE9l03wPKJtbFDqKYr9U/edit?usp=sharing';
 
+// This must be done manually, ex. see mdc.ufosightings.html.
 // const ENV = "dev";
 const ENV = "stage";
 

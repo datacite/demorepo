@@ -11,13 +11,14 @@
 <script src="https://unpkg.com/htmlincludejs"></script>
 <link rel="stylesheet" href="/assets/css/styles.css">
 <!-- Load the necessary scripts for analytics processing. -->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   if (ENV == 'dev') {
     document.write('<script async defer data-domain="localhost:5500" src="http://localhost:8000/js/custom_tracker/datacite-analytics.js"></script>');
   } else {
     document.write('<script async defer data-domain="demorepo.stage.datacite.org" src="https://analytics.stage.datacite.org/js/custom_tracker/datacite-analytics.js"></script>');
   }
-</script>
+</script> -->
+<script defer data-domain="demorepo.stage.datacite.org" src="https://analytics.stage.datacite.org/js/custom_tracker/datacite-analytics.js"></script>
 <!-- DOI is specified in the page as json+ld/schema.org metadata. -->
 <!-- The metadata must be embedded. Bringing it in by other methods does not seem to work well. -->
 <script type="application/ld+json">
