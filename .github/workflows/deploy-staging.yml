@@ -6,20 +6,36 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     env:
-      RACK_ENV: stage
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      ELEVENTY_ENV: stage
+      DATA_DOMAIN: stage
+      TRACKING_SCRIPT_LOC: https://analytics.stage.datacite.org/js/custom_tracker/datacite-analytics.js
+      DASHBOARD_URL: https://analytics.stage.datacite.org/demorepo.stage.datacite.org
+      DASHBOARD_URL_FABRICA: https://doi.stage.datacite.org/repositories/datacite.demo/analytics
     steps:
-      - uses: actions/checkout@v2
-      - name: Build
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Run build and test
         run: |
-          echo "Build"
+          npm ci
+          npm run build
 
       - name: Deploy
         uses: reggionick/s3-deploy@v2
         with:
-          folder: www
+          folder: _site
           bucket: ${{ secrets.STAGE_S3_BUCKET }}
           bucket-region: ${{ secrets.S3_BUCKET_REGION }}
           dist-id: ${{ secrets.STAGE_CLOUDFRONT_DISTRIBUTION_ID }}
