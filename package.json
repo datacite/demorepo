@@ -1,0 +1,26 @@
+{
+  "name": "demorepo",
+  "version": "1.0.0",
+  "description": "Demo Repository for analytics demonstration",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datacite/demorepo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/datacite/demorepo/issues"
+  },
+  "homepage": "https://github.com/datacite/demorepo#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.0",
+    "nunjucks": "^3.2.3"
+  }
+}

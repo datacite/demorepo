@@ -1,0 +1,26 @@
+{% extends 'base.njk' %}
+
+{% block customhead %}
+
+<script defer data-domain="{{ config.data_domain }}" src="{{ config.tracking_script_url }}"></script>
+
+{% endblock %}
+
+{% block pagecontent %}
+<div class="container custom-container-ws">
+
+{{ content | safe }}
+
+<div style="margin-bottom: 20px;">
+Click the 'Download Dataset' button and see how the event is recorded in the <a id="dashboard-link" target="_blank" href="{{ config.dashboard_url }}">repository's public analytics dashboard</a>
+or it's <a id="dashboard-link-fabrica" target="_blank" href="{{ config.dashboard_url_fabrica }}">Fabrica Usage Dashboard</a>.
+</div>
+
+<div style="margin-bottom: 20px;">
+<a href="{{ datasetfile }}" download="" data-analytics-downloads>
+    <button type="button" class="btn btn-secondary">Download Dataset</button>
+</a>
+</div>
+
+</div>
+{% endblock %}
