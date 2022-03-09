@@ -7,6 +7,11 @@ datasetfile: /assets/files/WHR_2017.csv
 <!-- DOI is not specified anywhere in this page. -->
 <!-- This results in an error reported in the browser console. -->
 
+<script defer data-repoid="{{ config.repo_id }}"
+        data-metric="view"
+        data-localhost="true"
+        data-endpoint="{{ config.tracking_api_endpoint }}"
+        src="{{ config.tracking_script_url }}"></script>
 
 <h2>World Happiness Report (2017) - DOI Not In Page</h2>
 <hr>

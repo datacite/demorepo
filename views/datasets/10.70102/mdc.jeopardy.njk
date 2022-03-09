@@ -6,6 +6,14 @@ datasetfile: /assets/files/JEOPARDY.csv
 
 <!-- For example: -->
 <!-- DOI is specified as a constant in the page. -->
+
+<script defer data-doi="10.70102/mdc.jeopardy"
+        data-repoid="{{ config.repo_id }}"
+        data-metric="view"
+        data-localhost="true"
+        data-endpoint="{{ config.tracking_api_endpoint }}"
+        src="{{ config.tracking_script_url }}"></script>
+
 <script type="text/javascript">const DOI="10.70102/mdc.jeopardy"</script>
 
 <h2>Jeopardy Dataset - DOI in the Tracking Snippet</h2>

@@ -18,8 +18,15 @@ schemaorg: |
     "provider": {
       "@type": "Organization",
       "name": "datacite"
+    }
   }
 ---
+
+<script defer data-repoid="{{ config.repo_id }}"
+        data-metric="view"
+        data-localhost="true"
+        data-endpoint="{{ config.tracking_api_endpoint }}"
+        src="{{ config.tracking_script_url }}"></script>
 
 <!-- DOI is specified in the page as json+ld/schema.org metadata. -->
 <!-- The metadata must be embedded. Bringing it in by other methods does not seem to work well. -->

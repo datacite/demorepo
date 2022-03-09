@@ -13,6 +13,12 @@ datasetfile: /assets/files/UFO_sightings_complete.csv
 <!-- DOI is specified in the page as Dublin Core metadata metadata. -->
 <!-- In this case, the DC metadata is encoded as html meta tags in the document header: -->
 
+<script defer data-repoid="{{ config.repo_id }}"
+        data-metric="view"
+        data-localhost="true"
+        data-endpoint="{{ config.tracking_api_endpoint }}"
+        src="{{ config.tracking_script_url }}"></script>
+
 <h2>UFO Sightings Dataset - DOI in the Dublin Core Metadata</h2>
 <hr>
 
