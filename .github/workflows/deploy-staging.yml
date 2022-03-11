@@ -15,7 +15,7 @@ jobs:
       ELEVENTY_ENV: stage
       DATA_DOMAIN: stage
       TRACKING_SCRIPT_LOC: https://cdn.jsdelivr.net/npm/@datacite/datacite-tracker
-      TRACKING_API_ENDPOINT: https://analytics.stage.datacite.org/
+      TRACKING_API_ENDPOINT: https://analytics.stage.datacite.org
       DASHBOARD_URL: https://analytics.stage.datacite.org/demorepo.stage.datacite.org
       DASHBOARD_URL_FABRICA: https://doi.stage.datacite.org/repositories/datacite.demo/analytics
     steps:
