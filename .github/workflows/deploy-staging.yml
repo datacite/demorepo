@@ -13,7 +13,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       ELEVENTY_ENV: stage
-      DATA_DOMAIN: stage
+      DATA_DOMAIN: demorepo.stage.datacite.org
       TRACKING_SCRIPT_LOC: https://cdn.jsdelivr.net/npm/@datacite/datacite-tracker
       TRACKING_API_ENDPOINT: https://analytics.stage.datacite.org
       DASHBOARD_URL: https://analytics.stage.datacite.org/demorepo.stage.datacite.org
